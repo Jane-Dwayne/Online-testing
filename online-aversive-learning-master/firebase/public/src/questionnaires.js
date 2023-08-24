@@ -4,6 +4,8 @@ import { ServerManager } from '../lib/core-3.0.0b3.js';
 import { initializeApp } from "firebase/app";
 import { getDatabase } from "firebase/database";
 import { getAnalytics } from "firebase/analytics";
+import { ref, push, set } from "firebase/database";
+
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -15,22 +17,13 @@ import { getAnalytics } from "firebase/analytics";
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
-const firebaseConfig = {
-    apiKey: "AIzaSyBYpXYRyIRdN8o0GyfVewSdUM2P3Q-tUb4",
-    authDomain: "onlinetesting-42b6b.firebaseapp.com",
-    databaseURL: "https://onlinetesting-42b6b-default-rtdb.firebaseio.com",
-    projectId: "onlinetesting-42b6b",
-    storageBucket: "onlinetesting-42b6b.appspot.com",
-    messagingSenderId: "303642679764",
-    appId: "1:303642679764:web:9ea15e68cbd228618dde41",
-    measurementId: "G-V4TG46RRYG"
-};
 
 // Initialize Realtime Database and get a reference to the service
 const database = getDatabase(app);
 const db = getFirestore(app);
 
-async function saveData(q_data)
+
+async function getValues(q_data)
 {
 
     console.log(q_data);
@@ -45,6 +38,7 @@ async function saveData(q_data)
             }}
     };
     //
+    const db = getDatabase(app);
     const response = serverManager.getConfiguration('config.json');
     this._config = response.config;
 
@@ -411,8 +405,11 @@ function getValues() {
 
 }
 
+        const submissionRef = ref(db, 'submissions'); // 'submissions' is a sample path
+        const newSubmissionRef = push(submissionRef); // Generate a unique key
+        set(newSubmissionRef, values);
 
-function createSubjectID() {
+        function createSubjectID() {
 
 
     const subjectIDForm = document.createElement("form");
