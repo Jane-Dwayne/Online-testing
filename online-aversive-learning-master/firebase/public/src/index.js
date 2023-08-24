@@ -6,7 +6,14 @@ import EndScene from './scenes/EndScene.js';
 import AvoidanceStart from './scenes/AvoidanceStart.js';
 import AvoidanceScene from './scenes/AvoidanceScene.js';
 import NextPhase from './scenes/NextPhase.js';
+import { initializeApp } from "firebase/app";
+import { getDatabase } from "firebase/database";
+import { getAnalytics } from "firebase/analytics";
+import { ref, push, set } from "firebase/database";
 
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+const dbRealtime = getDatabase(); // Initialize Realtime Database
 const game = new GameScene('GameScene');
 const avoidance = new AvoidanceScene('AvoidanceScene');
 const gameover = new GameOver("GameOver");
@@ -67,10 +74,10 @@ if (user) {
 
 // Consent form
 const check_consent = function (elem) {
-    // if ($('#consent_checkbox1').is(':checked') && $('#consent_checkbox2').is(':checked') &&
-    //     $('#consent_checkbox3').is(':checked') && $('#consent_checkbox4').is(':checked') &&
-    //     $('#consent_checkbox5').is(':checked') && $('#consent_checkbox6').is(':checked') &&
-    //     $('#consent_checkbox7').is(':checked')) {
+    if ($('#consent_checkbox1').is(':checked') && $('#consent_checkbox2').is(':checked') &&
+        $('#consent_checkbox3').is(':checked') && $('#consent_checkbox4').is(':checked') &&
+        $('#consent_checkbox5').is(':checked') && $('#consent_checkbox6').is(':checked') &&
+        $('#consent_checkbox7').is(':checked')) {
     if (1 == 1) {
 
         document.getElementById('consent').innerHTML = "";
@@ -108,6 +115,8 @@ const check_consent = function (elem) {
                 subjectID: game.subjectID,
                 date: new Date().toLocaleDateString(),
                 time: new Date().toLocaleTimeString()
+
+
                 })
 
             game.db = db;
@@ -145,4 +154,4 @@ if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(naviga
     alert("Sorry, this experiment does not work on mobile devices");
     document.getElementById('consent').innerHTML = "";
 }
-
+}
